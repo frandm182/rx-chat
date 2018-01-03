@@ -66,6 +66,19 @@ app.post('/', (req,res) => {
     res.send(`Hello! ${name}`)
 })
 
+//404 error
+app.use((req, res, next) => {
+    const err = new Error('Sorry route not found')
+    err.status = 404
+    next(err)
+})
+
+//Internal error handler
+app.use((err, req, res, next) => {
+    res.status(err.status || 500)
+    res.send(err.message || { err: 'internal server error' })
+})
+
 //start server
 server.listen(4000,() => {
     console.log('rx server running in port 4000')
