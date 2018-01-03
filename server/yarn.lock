@@ -799,6 +799,10 @@ ignore-by-default@^1.0.1:
   version "1.0.1"
   resolved "http://intersinopia:4873/ignore-by-default/-/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
 
+immutable@^4.0.0-rc.4:
+  version "4.0.0-rc.4"
+  resolved "http://intersinopia:4873/immutable/-/immutable-4.0.0-rc.4.tgz#eff99bcea8bd68ce6c7725885e44011225f14fec"
+
 import-lazy@^2.1.0:
   version "2.1.0"
   resolved "http://intersinopia:4873/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"
@@ -1732,6 +1736,10 @@ tough-cookie@~2.3.0:
   resolved "http://intersinopia:4873/tough-cookie/-/tough-cookie-2.3.3.tgz#0b618a5565b6dea90bf3425d04d55edc475a7561"
   dependencies:
     punycode "^1.4.1"
+
+tslib@^1.8.1:
+  version "1.8.1"
+  resolved "http://intersinopia:4873/tslib/-/tslib-1.8.1.tgz#6946af2d1d651a7b1863b531d6e5afa41aa44eac"
 
 tunnel-agent@^0.6.0:
   version "0.6.0"

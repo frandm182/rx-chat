@@ -6,8 +6,10 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "immutable": "^4.0.0-rc.4",
     "rxjs": "^6.0.0-alpha.0",
-    "socketio": "^1.0.0"
+    "socketio": "^1.0.0",
+    "tslib": "^1.8.1"
   },
   "scripts": {
     "start": "nodemon index.js"
