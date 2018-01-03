@@ -6136,6 +6136,10 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "http://intersinopia:4873/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
+tslib@^1.8.1:
+  version "1.8.1"
+  resolved "http://intersinopia:4873/tslib/-/tslib-1.8.1.tgz#6946af2d1d651a7b1863b531d6e5afa41aa44eac"
+
 tty-browserify@0.0.0:
   version "0.0.0"
   resolved "http://intersinopia:4873/tty-browserify/-/tty-browserify-0.0.0.tgz#a157ba402da24e9bf957f9aa69d524eed42901a6"

@@ -4,82 +4,81 @@ const bodyParser = require('body-parser')
 const socketio = require('socket.io')
 const Immutable = require('immutable')
 const { Observable } = require('rxjs')
+const cors = require('cors')
 
-//Initialize aplication
+//initalize our application
 const app = express()
+// add cors middleware
+app.use(cors())
 
-//Setup body parser middleware
+// setup body parser middleware for json
 app.use(bodyParser.json())
-
-// create a server using express
+// create a server using express app
 const server = http.createServer(app)
-
-//Initialize socket io with server
+// initialize socket io with server
 const io = socketio(server)
 
-const usersList = Immutable.Map({});
+// user list of connected clients
+const userList = new Map()
 
-//socket logic on connect
-
+// socket logic on connect
 const sourceConnect = Observable.create(observer => {
-    io.on('connection', socket => {
-        socket.emit('my socketId', { socketId: socket.id, connectTime: Date.now() })
-        socket.on('client connect', data => {
-            observer.next({ socket: socket, data: data, event: 'client connect' })
-        })
+  io.on('connection', socket => {
+    socket.emit('my socketId', { socketId: socket.id, connectTime: Date.now() })
+    socket.on('client connect', data => {
+      observer.next({ socket: socket, data: data, event: 'client connect' })
     })
-    
+  })
 })
 
 sourceConnect.subscribe(obj => {
-    userList.set(obj.data.socketId, obj.data)
-    io.emit('all users', userList.toArray())
+  userList.set(obj.data.socketId, obj.data)
+  io.emit('all users', Array.from(userList).map(([key, value]) => value))
 })
 
-//socket logic for post message
-app.post('/message', (req,res) => {
-    io.emit('message', req.body)
-})
-
-//socket logic on disconnect
+// socket logic on disconnect
 const sourceDisconnect = Observable.create(observer => {
-     io.on('connection', socket => {         
-       socket.on('client connect', data => {
-        observer.next({ socketId: socket.id, event: 'client disconnect' })
-       })
+  io.on('connection', socket => {
+    socket.on('disconnect', data => {
+      observer.next({ socketId: socket.id, event: 'client disconnect' })
     })
+  })
 })
 
 sourceDisconnect.subscribe(obj => {
-    userList.delete(obj.socketId)
-    io.emit('all users', userList.toArray())
+  userList.delete(obj.socketId)
+  io.emit('all users', Array.from(userList).map(([key, value]) => value))
 })
 
-//http://localhost:4000
-app.get('/', (req,res) => {
-    res.send('Hello world')
+//socket logic for post message
+app.post('/message', (req, res) => {
+  io.emit('message', req.body)
 })
 
-//http://localhost:4000
-app.post('/', (req,res) => {
-    const name = req.body.name
-    res.send(`Hello! ${name}`)
+// demo routes
+app.get('/', (req, res) => {
+  res.send('Hello World!')
 })
 
-//404 error
+app.post('/', (req, res) => {
+  const name = req.body.name
+  res.send(`Hello! ${name}`)
+})
+
+// 404 error
 app.use((req, res, next) => {
-    const err = new Error('Sorry route not found')
-    err.status = 404
-    next(err)
+  const err = new Error('Sorry!! route not found')
+  err.status = 404
+  next(err)
 })
 
-//Internal error handler
+// Internal Error handler
 app.use((err, req, res, next) => {
-    res.status(err.status || 500)
-    res.send(err.message || { err: 'internal server error' })
+  res.status(err.status || 500)
+  res.send(err.message || { err: 'internal server error' })
 })
 
-//start server
-server.listen(4000,() => {
-    console.log('rx server running in port 4000')
+//start our server
+server.listen(4000, () => {
+  console.log('rx chat server running at port 4000')
 })
